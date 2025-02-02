@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 
 // Allow multiple origins dynamically
-const allowedOrigins = ["http://localhost:8080", "http://localhost:5173"];
+const allowedOrigins = [process.env.ALLOWED_ORIGINS];
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json()); // Parse JSON request bodies
 
@@ -142,5 +142,5 @@ app.put('/cancel-order/:id', async (req, res) => {
 
 // 🚀 Start the server
 app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
+    console.log(`✅ Server running`);
 });
