@@ -4,14 +4,16 @@
     <h1 class="text-center">Guild Bag Inventory</h1>
 
     <!-- Bag List -->
-    <BagList :bags="bags" :isAdmin="isAdmin" @open-dialog="openDialog" @remove-bag="removeBag" />
+    <BagList v-if="bags.length > 0" :bags="bags" :isAdmin="isAdmin" @open-dialog="openDialog" @remove-bag="removeBag" />
+    <span v-else>No bags to display.</span>
 
     <!-- Request Dialog -->
     <RequestDialog v-if="selectedBag" :visible="dialogVisible" :selected-bag="selectedBag"
       @update:visible="dialogVisible = $event" @send-request="sendRequest" />
 
     <!-- Order List -->
-    <OrderList :orders="orders" :isAdmin="isAdmin" />
+    <OrderList v-if="orders.length > 0" :orders="orders" :isAdmin="isAdmin" />
+    <span v-else>No orders to display.</span>
   </div>
 </template>
 
