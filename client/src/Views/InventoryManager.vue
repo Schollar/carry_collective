@@ -4,7 +4,8 @@
     <h1 class="text-center">Guild Bag Inventory</h1>
 
     <!-- Bag List -->
-    <BagList v-if="bags.length > 0" :bags="bags" :isAdmin="isAdmin" @open-dialog="openDialog" @remove-bag="removeBag" />
+    <BagList v-if="bags.data?.length > 0" :bags="bags" :isAdmin="isAdmin" @open-dialog="openDialog"
+      @remove-bag="removeBag" />
     <span v-else>No bags to display.</span>
 
     <!-- Request Dialog -->
