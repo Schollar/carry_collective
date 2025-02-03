@@ -6,13 +6,13 @@ const { Bag, Order } = require('./database'); // Import models
 const app = express();
 const PORT = 3000;
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 // Allow multiple origins dynamically
-const allowedOrigins = [process.env.ALLOWED_ORIGINS];
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json()); // Parse JSON request bodies
 
 // 👜 Get all bags
-app.get('/bags', async (req, res) => {
+app.get('/api/bags', async (req, res) => {
     try {
         const bags = await Bag.findAll();
         res.json(bags);
@@ -23,7 +23,7 @@ app.get('/bags', async (req, res) => {
 });
 
 // ➕ Add a new bag
-app.post('/bags', async (req, res) => {
+app.post('/api/bags', async (req, res) => {
     try {
         const { name, quantity } = req.body;
         if (!name || !quantity) {
@@ -39,7 +39,7 @@ app.post('/bags', async (req, res) => {
 });
 
 // ❌ Remove a bag
-app.delete('/bags/:id', async (req, res) => {
+app.delete('/api/bags/:id', async (req, res) => {
     try {
         await Bag.destroy({ where: { id: req.params.id } });
         res.json({ success: true });
@@ -50,7 +50,7 @@ app.delete('/bags/:id', async (req, res) => {
 });
 
 // 📜 Get all orders
-app.get('/orders', async (req, res) => {
+app.get('/api/orders', async (req, res) => {
     try {
         const orders = await Order.findAll();
         res.json(orders);
@@ -61,7 +61,7 @@ app.get('/orders', async (req, res) => {
 });
 
 // 📝 Request a bag (Adds to  Orders)
-app.post('/request-bag', async (req, res) => {
+app.post('/api/request-bag', async (req, res) => {
     try {
         const { bagName, quantity, requester } = req.body;
         if (!bagName || !quantity || !requester) {
@@ -79,7 +79,7 @@ app.post('/request-bag', async (req, res) => {
 });
 
 // ✅ Approve an order
-app.put('/approve-order/:id', async (req, res) => {
+app.put('/api/approve-order/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -123,7 +123,7 @@ app.put('/approve-order/:id', async (req, res) => {
 });
 
 // ❌ cancel an order
-app.put('/cancel-order/:id', async (req, res) => {
+app.put('/api/cancel-order/:id', async (req, res) => {
     try {
         const order = await Order.findByPk(req.params.id);
         if (!order) {
@@ -142,5 +142,5 @@ app.put('/cancel-order/:id', async (req, res) => {
 
 // 🚀 Start the server
 app.listen(PORT, () => {
-    console.log(`✅ Server running`);
+    console.log(`✅ Server running on http://localhost:${PORT}`);
 });
