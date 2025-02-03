@@ -1,10 +1,10 @@
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
 const express = require('express');
 const cors = require('cors');
 const { Bag, Order } = require('./database'); // Import models
 
 const app = express();
-const PORT = 3000;
+const PORT = 1337;
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 // Allow multiple origins dynamically
