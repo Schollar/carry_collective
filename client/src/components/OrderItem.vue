@@ -17,7 +17,9 @@
 
             <v-col cols="12" sm="12" :md="isAdmin ? 2 : 3">
                 <strong>Status:</strong>
-                <v-chip :color="getStatusColor(order.status)" small>{{ order.status }}</v-chip>
+                <v-chip :color="getStatusColor(order.status)" small>{{ order?.status.charAt(0).toUpperCase() +
+                    order?.status.slice(1) }}
+                </v-chip>
             </v-col>
 
             <v-col v-if="isAdmin && order.status !== 'approved'" cols="12" sm="12" md="4" class="d-flex justify-center">
