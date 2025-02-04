@@ -11,7 +11,7 @@ export default {
         },
         APPROVE_ORDER(state, orderId) {
             const order = state.orders.find((o) => o.id === orderId);
-            if (order) order.status = "approved";
+            if (order) order.status = "delivered";
         },
         CANCEL_ORDER(state, orderId) {
             const order = state.orders.find((o) => o.id === orderId);
