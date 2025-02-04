@@ -111,7 +111,7 @@ app.put('/api/approve-order/:id', async (req, res) => {
         await bagInventory.save();
 
         // Approve the order
-        order.status = 'approved';
+        order.status = 'delivered';
         await order.save();
 
         // Respond with success
