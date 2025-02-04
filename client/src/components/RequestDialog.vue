@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :model-value="visible" @update:model-value="updateVisibility" max-width="50%">
+    <v-dialog :model-value="visible" @update:model-value="updateVisibility" max-width="500px">
         <v-card class="dialog-card">
             <v-card-title class="headline">Request Bag</v-card-title>
             <v-card-text>
@@ -17,6 +17,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+
 </template>
 
 <script>
