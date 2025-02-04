@@ -22,7 +22,8 @@
                 </v-chip>
             </v-col>
 
-            <v-col v-if="isAdmin && order.status !== 'approved'" cols="12" sm="12" md="4" class="d-flex justify-center">
+            <v-col v-if="isAdmin && order.status !== 'delivered'" cols="12" sm="12" md="4"
+                class="d-flex justify-center">
                 <v-btn color="primary" @click="approveOrder(order.id)" class="mr-2">Complete</v-btn>
                 <v-btn color="error" @click="cancelOrder(order.id)">Cancel</v-btn>
             </v-col>
@@ -62,7 +63,7 @@ export default {
             switch (status.toLowerCase()) {
                 case 'pending':
                     return 'orange';
-                case 'approved':
+                case 'delivered':
                     return 'green';
                 case 'cancelled':
                     return 'red';
