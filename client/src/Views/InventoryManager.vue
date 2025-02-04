@@ -1,7 +1,7 @@
 <template>
   <div class="inventory-manager">
     <img src="@/assets/banner.png" alt="Logo" class="logo" width="25%" />
-    <h1 class="text-center">Guild Bag Inventory</h1>
+    <h1 class="text-center">Current Inventory</h1>
 
     <!-- Bag List -->
     <BagList v-if="bags.data?.length > 0" :bags="bags" :isAdmin="isAdmin" @open-dialog="openDialog"
