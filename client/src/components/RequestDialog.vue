@@ -47,7 +47,15 @@ export default {
             return (value) => !!value || 'This field is required.';
         },
         positiveNumberRule() {
-            return (value) => value > 0 || 'Quantity must be greater than 0.';
+            return (value) => {
+                if (value <= 0) {
+                    return 'Quantity must be greater than 0.';
+                }
+                if (value > this.selectedBag.quantity) {
+                    return `Quantity cannot be greater than ${this.selectedBag.quantity}.`;
+                }
+                return true;
+            };
         },
     },
     methods: {
