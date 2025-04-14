@@ -1,12 +1,13 @@
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 const express = require('express');
 const cors = require('cors');
 const { Bag, Order } = require('./database'); // Import models
 
 const app = express();
 const PORT = 1337;
-
+console.log('stuff ', process.env.ALLOWED_ORIGINS);
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+
 // Allow multiple origins dynamically
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json()); // Parse JSON request bodies
@@ -94,22 +95,6 @@ app.put('/api/approve-order/:id', async (req, res) => {
             return res.status(400).json({ error: 'Order is already approved' });
         }
 
-        // Find the bag inventory (assuming there's only one inventory record)
-        const bagInventory = await Bag.findOne({ where: { name: order.bagName } });
-        if (!bagInventory) {
-            return res.status(500).json({ error: 'Bag inventory not found' });
-        }
-
-        // Check if there are enough bags in inventory
-        if (bagInventory < order.quantity) {
-            return res.status(400).json({ error: 'Insufficient bags in inventory' });
-        }
-
-
-        // Deduct the bags from inventory
-        bagInventory.quantity -= order.quantity;
-        await bagInventory.save();
-
         // Approve the order
         order.status = 'delivered';
         await order.save();
@@ -137,6 +122,50 @@ app.put('/api/cancel-order/:id', async (req, res) => {
     } catch (error) {
         console.error('Error canceling order:', error);
         res.status(500).json({ error: 'Failed to cancel order' });
+    }
+});
+
+
+app.put('/api/send-order/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the order
+        const order = await Order.findByPk(id);
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        // Check if the order is already approved
+        if (order.status === 'shipped') {
+            return res.status(400).json({ error: 'Order is already shipped' });
+        }
+
+        // Find the bag inventory (assuming there's only one inventory record)
+        const bagInventory = await Bag.findOne({ where: { name: order.bagName } });
+        if (!bagInventory) {
+            return res.status(500).json({ error: 'Bag inventory not found' });
+        }
+
+        // Check if there are enough bags in inventory
+        if (bagInventory < order.quantity) {
+            return res.status(400).json({ error: 'Insufficient bags in inventory' });
+        }
+
+
+        // Deduct the bags from inventory
+        bagInventory.quantity -= order.quantity;
+        await bagInventory.save();
+
+        // Approve the order
+        order.status = 'shipped';
+        await order.save();
+
+        // Respond with success
+        res.json({ success: true, message: 'Order shipped', order });
+    } catch (error) {
+        console.error('Error shipping order:', error);
+        res.status(500).json({ error: 'Failed to ship order' });
     }
 });
 

@@ -2,7 +2,8 @@
     <div>
         <h1>Admin Dashboard</h1>
         <BagList :bags="bags" :isAdmin="isAdmin" />
-        <OrderList :orders="orders" :is-admin="isAdmin" @cancel-order="cancelOrder" @approve-order="sendApproveOrder" />
+        <OrderList :orders="orders" :is-admin="isAdmin" @cancel-order="cancelOrder" @approve-order="sendApproveOrder"
+            @order-sent="sendOrder" />
     </div>
 </template>
 
@@ -28,7 +29,7 @@ export default {
         await this.fetchOrders(); // Fetch orders when the component is created
     },
     methods: {
-        ...mapActions('orders', ['fetchOrders', 'approveOrder', 'cancelOrder']), // Map actions
+        ...mapActions('orders', ['fetchOrders', 'approveOrder', 'cancelOrder', 'sendOrder']), // Map actions
         ...mapActions('bags', ['fetchBags']), // Map actions
         async sendApproveOrder(orderId) {
             await this.approveOrder(orderId);

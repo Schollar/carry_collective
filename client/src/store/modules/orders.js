@@ -19,7 +19,11 @@ export default {
         },
         ADD_ORDER(state, order) {
             state.orders.push(order.order);
-        }
+        },
+        SEND_ORDER(state, orderId) {
+            const order = state.orders.find((o) => o.id === orderId);
+            if (order) order.status = "shipped";
+        },
     },
     actions: {
         async fetchOrders({ commit }) {
@@ -33,6 +37,10 @@ export default {
         async cancelOrder({ commit }, orderId) {
             await apiService.cancelOrder(orderId);
             commit("CANCEL_ORDER", orderId);
+        },
+        async sendOrder({ commit }, orderId) {
+            await apiService.sendOrder(orderId);
+            commit("SEND_ORDER", orderId);
         },
         async createOrder({ commit }, payload) {
             try {

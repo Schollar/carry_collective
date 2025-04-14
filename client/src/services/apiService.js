@@ -24,4 +24,7 @@ export default {
     async cancelOrder(orderId) {
         return axios.put(`${API_BASE_URL}/api/cancel-order/${orderId}`);
     },
+    async sendOrder(orderId) {
+        return axios.put(`${API_BASE_URL}/api/send-order/${orderId}`);
+    },
 };
